@@ -1,5 +1,6 @@
 # depends on
 #
+# build: 
 # $CONTAINER_ID
 # $ENV
 # $PROJECT_NAME
@@ -33,3 +34,22 @@ else
 		DAEMON_FLAG:=-d --restart="always"
 	endif
 endif
+
+# makes the image
+image: build
+	@if ! docker images $(IMAGE_NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo 'building image'; docker build -t $(IMAGE_NAME) . ; fi
+
+# pushes the image to dockerhub
+push:
+	docker push $(IMAGE_NAME)
+
+# removes the container
+rm: 
+	docker rm $(CONTAINER_NAME)
+
+# kills the container
+kill: 
+	docker kill $(CONTAINER_NAME)
+
+attach: schema
+	docker exec -ti $(CONTAINER_NAME) /bin/bash
