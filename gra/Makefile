@@ -3,8 +3,6 @@
 # $ARTIFACT_NAME
 # $ORG
 # $PROJECT_DIR
-# $PROJECT_NAME
-# $VERSION
 #
 # exports
 #
