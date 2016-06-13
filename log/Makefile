@@ -1,12 +1,9 @@
 # depends on
 #
-# $LOG_DIR
+# $LOG
 #
 # exports
 #
-# log target
-log: $(LOG_DIR)
-
-# $(LOG_DIR) target
-$(LOG_DIR):
-	mkdir -p $(LOG_DIR)
+# $(LOG) target
+$(LOG): log
+	mkdir -p $(LOG)

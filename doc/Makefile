@@ -15,18 +15,24 @@
 # exports docker related variables
 #
 # a container specific suffix
+suffix:
 SUFFIX:=$(shell date +'%N' | md5sum | cut -c 1-6)
 
 # the image's name
+image_name: org project_name version
 IMAGE_NAME:=$(ORG)/$(PROJECT_NAME):$(VERSION)
 
 # the container's name
+container_name: project_name container_id suffix
 CONTAINER_NAME:=$(PROJECT_NAME)-$(CONTAINER_ID)-$(SUFFIX)
 
 # docker's work dir
+workdir: org project_name
 WORKDIR:=/$(ORG)/$(PROJECT_NAME)
 
 # remove container or daemon flag
+remove_container_flag:
+daemon_flag:
 ifdef FORCE
   REMOVE_CONTAINER_FLAG:=--rm
 else
@@ -36,20 +42,20 @@ else
 endif
 
 # makes the image
-image: build
+image: image_name version build
 	@if ! docker images $(IMAGE_NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo 'building image'; docker build -t $(IMAGE_NAME) . ; fi
 
 # pushes the image to dockerhub
-push:
+push: image_name
 	docker push $(IMAGE_NAME)
 
 # removes the container
-rm: 
+rm: container_name
 	docker rm $(CONTAINER_NAME)
 
 # kills the container
-kill: 
+kill: container_name
 	docker kill $(CONTAINER_NAME)
 
-attach: schema
+attach: container_name 
 	docker exec -ti $(CONTAINER_NAME) /bin/bash
