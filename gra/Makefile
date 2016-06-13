@@ -37,3 +37,7 @@ gradle: gradle_image gradle_version
 
 # build target
 build: gradle $(JAVA_ARTIFACT)
+
+# path to the built java artifact
+artifact: build
+ARTIFACT:=$(JAVA_ARTIFACT)
