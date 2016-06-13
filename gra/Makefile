@@ -16,8 +16,12 @@ GRADLE_VERSION:=2.13
 gradle_image: org gradle_version
 GRADLE_IMAGE:=$(ORG)/gradle:$(GRADLE_VERSION)
 
+# checks gradle binary already exists target 
+check_gradle: gradle_image gradle_version
+	@if ! docker images $(GRADLE_IMAGE) | awk '{ print $$2 }' | grep -q -F $(GRADLE_VERSION); then echo "building $(GRADLE_IMAGE)"; docker build -t $(GRADLE_IMAGE) --build-arg GRADLE_VERSION=$(GRADLE_VERSION) builder ; fi
+
 # gradles's binary
-gradle_binary: 
+gradle_binary: check_gradle
 GRADLE_BINARY:=docker run --net host --rm -v "$$HOME/.gradle/caches":/root/.gradle/caches -v $(PROJECT_DIR):/project -i $(GRADLE_IMAGE) 
 
 # build directory
@@ -29,12 +33,8 @@ java_artifact: build_dir artifact_name
 JAVA_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 
 # absolute path java artifact target
-$(JAVA_ARTIFACT): gradle_binary version java_artifact
+$(JAVA_ARTIFACT): gradle_binary artifact_name java_artifact
 	$(GRADLE_BINARY) -ParchiveName=$(ARTIFACT_NAME) clean build
 
-# gradle's target 
-gradle: gradle_image gradle_version
-	@if ! docker images $(GRADLE_IMAGE) | awk '{ print $$2 }' | grep -q -F $(GRADLE_VERSION); then echo "building $(GRADLE_IMAGE)"; docker build -t $(GRADLE_IMAGE) --build-arg GRADLE_VERSION=$(GRADLE_VERSION) builder ; fi
-
 # build target
-build: gradle $(JAVA_ARTIFACT)
+build: $(JAVA_ARTIFACT)
