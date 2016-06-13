@@ -1,5 +1,6 @@
 # depends on
 #
+# $ARTIFACT_NAME
 # $ORG
 # $PROJECT_DIR
 # $PROJECT_NAME
@@ -23,20 +24,16 @@ GRADLE_BINARY:=docker run --net host --rm -v "$$HOME/.gradle/caches":/root/.grad
 build_dir: project_dir
 BUILD_DIR:=$(PROJECT_DIR)/build/libs
 
-# jar name 
-jar_name: org project_name version
-JAR_NAME:=$(ORG)-$(PROJECT_NAME)-$(VERSION).jar
-
 # java artifact
-java_artifact: build_dir jar_name
-JAVA_ARTIFACT:=$(BUILD_DIR)/$(JAR_NAME)
+java_artifact: build_dir artifact_name 
+JAVA_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 
-$(JAVA_ARTIFACT): gradle_binary
-	$(GRADLE_BINARY) clean build
+$(JAVA_ARTIFACT): gradle_binary version java_artifact
+	$(GRADLE_BINARY) -ParchiveName=$(ARTIFACT_NAME) clean build
 
 # gradle's target 
 gradle: gradle_image gradle_version
-	@if ! docker images $(GRADLE_IMAGE) | awk '{ print $$2 }' | grep -q -F $(GRADLE_VERSION); then echo 'building image'; docker build -t $(GRADLE_IMAGE) --build-arg GRADLE_VERSION=$(GRADLE_VERSION) builder ; fi
+	@if ! docker images $(GRADLE_IMAGE) | awk '{ print $$2 }' | grep -q -F $(GRADLE_VERSION); then echo "building $(GRADLE_IMAGE)"; docker build -t $(GRADLE_IMAGE) --build-arg GRADLE_VERSION=$(GRADLE_VERSION) builder ; fi
 
 # build target
 build: gradle $(JAVA_ARTIFACT)
