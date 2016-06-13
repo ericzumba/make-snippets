@@ -36,7 +36,7 @@ else
 endif
 
 # makes the image
-image: 
+image: artifact 
 	@if ! docker images $(IMAGE_NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo 'building image'; docker build --build-arg ARTIFACT=$(ARTIFACT) -t $(IMAGE_NAME) . ; fi
 
 # pushes the image to dockerhub

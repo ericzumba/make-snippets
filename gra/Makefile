@@ -33,3 +33,6 @@ $(JAVA_ARTIFACT):
 
 # build target
 build: gradle $(JAVA_ARTIFACT)
+
+# artifact target
+artifact: build
