@@ -1,10 +1,9 @@
-# depends on
-#
-# $ARTIFACT_NAME
-# $ORG
-# $PROJECT_DIR
-#
-# exports
+# DEPENDS ON
+$(if $(value ARTIFACT_NAME),,$(error "ARTIFACT_NAME is required for gra/Makefile")) 
+$(if $(value ORG),,$(error "ORG is required for gra/Makefile")) 
+$(if $(value PROJECT_DIR),,$(error "PROJECT_DIR is required for gra/Makefile")) 
+
+# EXPORTS gradle related targets and variables
 #
 # gradle's version
 GRADLE_VERSION:=2.13

@@ -1,4 +1,4 @@
-# exports git related variables
+# EXPORTS git related variables
 #
 # points to a commit hash 
 COMMIT_HASH=$(shell git rev-parse --short HEAD)

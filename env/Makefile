@@ -1,4 +1,4 @@
-# exports environment related variables
+# EXPORTS environment related variables
 #
 # defaults to development environment
 ENV?=dev

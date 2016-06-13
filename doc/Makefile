@@ -1,18 +1,14 @@
-# depends on
-#
-# build: 
-# $CONTAINER_ID
-# $ENV
-# $PROJECT_NAME
-# $ORG
-# $VERSION
-#
-# optional values for
-#
+# DEPENDS ON
+$(if $(value CONTAINER_ID),,$(error "CONTAINER_ID is required for doc/Makefile")) 
+$(if $(value ORG),,$(error "ORG is required for doc/Makefile")) 
+$(if $(value PROJECT_NAME),,$(error "PROJECT_NAME is required for doc/Makefile")) 
+$(if $(value VERSION),,$(error "VERSION is required for doc/Makefile")) 
+
+# OPTIONAL VALUES FOR
 # $FORCE
 # $NO_DAEMON
 #
-# exports docker related variables
+# EXPORTS docker related variables and targets
 #
 # a container specific suffix
 SUFFIX:=$(shell date +'%N' | md5sum | cut -c 1-6)
