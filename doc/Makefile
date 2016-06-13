@@ -34,11 +34,11 @@ WORKDIR:=/$(ORG)/$(PROJECT_NAME)
 remove_container_flag:
 daemon_flag:
 ifdef FORCE
-REMOVE_CONTAINER_FLAG:=--rm
+  REMOVE_CONTAINER_FLAG:=--rm
 else
-ifndef NO_DAEMON
-DAEMON_FLAG:=-d --restart="always"
-endif
+  ifndef NO_DAEMON
+    DAEMON_FLAG:=-d --restart="always"
+  endif
 endif
 
 # makes the image
