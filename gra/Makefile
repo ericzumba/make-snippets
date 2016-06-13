@@ -28,6 +28,7 @@ BUILD_DIR:=$(PROJECT_DIR)/build/libs
 java_artifact: build_dir artifact_name 
 JAVA_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 
+# absolute path java artifact target
 $(JAVA_ARTIFACT): gradle_binary version java_artifact
 	$(GRADLE_BINARY) -ParchiveName=$(ARTIFACT_NAME) clean build
 
@@ -37,7 +38,3 @@ gradle: gradle_image gradle_version
 
 # build target
 build: gradle $(JAVA_ARTIFACT)
-
-# path to the built java artifact
-artifact: build
-ARTIFACT:=$(JAVA_ARTIFACT)
