@@ -1,4 +1,5 @@
 # DEPENDS ON
+$(if $(value ARTIFACT),,$(error "ARTIFACT is required for doc/Makefile")) 
 $(if $(value CONTAINER_ID),,$(error "CONTAINER_ID is required for doc/Makefile")) 
 $(if $(value ORG),,$(error "ORG is required for doc/Makefile")) 
 $(if $(value PROJECT_NAME),,$(error "PROJECT_NAME is required for doc/Makefile")) 
