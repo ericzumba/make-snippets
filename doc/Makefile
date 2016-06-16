@@ -10,7 +10,7 @@ $(if $(value VERSION),,$(error "VERSION is required for doc/Makefile"))
 # $NO_DAEMON
 #
 # EXPORTS docker related variables and targets
-#
+
 # a container specific suffix
 SUFFIX:=$(shell date +'%N' | md5sum | cut -c 1-6)
 
