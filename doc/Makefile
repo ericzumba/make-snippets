@@ -23,6 +23,9 @@ CONTAINER_NAME:=$(PROJECT_NAME)-$(CONTAINER_ID)-$(SUFFIX)
 # docker's work dir
 WORKDIR:=/$(ORG)/$(PROJECT_NAME)
 
+# sensible inside container log location
+CONTAINER_LOG?=$(WORKDIR)/log
+
 # remove container or daemon flag
 ifdef FORCE
   REMOVE_CONTAINER_FLAG:=--rm
