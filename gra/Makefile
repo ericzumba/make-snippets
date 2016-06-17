@@ -3,8 +3,14 @@ $(if $(value ARTIFACT_NAME),,$(error "ARTIFACT_NAME is required for gra/Makefile
 $(if $(value ORG),,$(error "ORG is required for gra/Makefile")) 
 $(if $(value PROJECT_DIR),,$(error "PROJECT_DIR is required for gra/Makefile")) 
 
+# OPTIONAL
+# $BUILD_DIR
+
 # EXPORTS gradle related targets and variables
 #
+# build directory
+BUILD_DIR?=$(PROJECT_DIR)/build/libs
+
 # gradle's version
 GRADLE_VERSION:=2.13
 
@@ -17,9 +23,6 @@ gradle:
 
 # gradle's binary
 GRADLE_BINARY:=docker run --net host --rm -v "$$HOME/.gradle/caches":/root/.gradle/caches -v $(PROJECT_DIR):/project -i $(GRADLE_IMAGE)
-
-# build directory
-BUILD_DIR:=$(PROJECT_DIR)/build/libs
 
 # java artifact
 JAVA_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
