@@ -31,6 +31,10 @@ JAVA_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 $(JAVA_ARTIFACT): 
 	$(GRADLE_BINARY) -PartifactName=$(ARTIFACT_NAME) clean build
 
+# a test target
+test:
+	$(GRADLE_BINARY) test
+
 # build target
 build: gradle $(JAVA_ARTIFACT)
 
