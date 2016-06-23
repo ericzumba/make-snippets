@@ -35,6 +35,9 @@ $(JAVA_ARTIFACT):
 test:
 	$(GRADLE_BINARY) test
 
+list-dependencies:
+	$(GRADLE_BINARY) -q dependencies 
+
 # build target
 build: gradle $(JAVA_ARTIFACT)
 
