@@ -21,7 +21,7 @@ NPM_BINARY:=docker run -v $(PROJECT_DIR):/src -it --rm $(NPM_IMAGE) npm
 # path to artifact
 NPM_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 
-build: npm
+build: npm $(BUILD_DIR)
 	$(NPM_BINARY) install && tar -cf $(NPM_ARTIFACT) node_modules app.js lib
 
 $(NPM_ARTIFACT): build
