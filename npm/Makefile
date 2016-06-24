@@ -12,7 +12,7 @@ BUILD_DIR?=$(PROJECT_DIR)/dist
 NPM_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
 
 build:
-	docker run -v $(PROJECT_DIR):/app -it --rm mkenney/npm install && \
+	docker run -v $(PROJECT_DIR):/src -it --rm mkenney/npm:alpine npm install && \
 		tar -cf $(NPM_ARTIFACT) node_modules app.js lib
 
 $(NPM_ARTIFACT): build
