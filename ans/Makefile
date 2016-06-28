@@ -9,7 +9,7 @@ ANSIBLE_TEMPLATES_DIR:=$(ANSIBLE_DIR)/template
 ANSIBLE_USER_DATA=$(ANSIBLE_TEMPLATES_DIR)/user-data.j2
 ANSIBLE_BASE_USER_DATA=$(ANSIBLE_TEMPLATES_DIR)/base-user-data.j2
 
-user_data: LOG = $(EC2_LOG_DIR) 
+user_data: LOG=$(EC2_LOG_DIR)
 user_data: schema 
 	cat $(ANSIBLE_BASE_USER_DATA) > $(ANSIBLE_USER_DATA)
 	echo $(RUN_CMD) >> $(ANSIBLE_USER_DATA) 
