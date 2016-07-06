@@ -16,7 +16,7 @@ NPM_IMAGE:=vivareal/npm:$(NODE_VERSION)
 npm:
 	@if ! docker images $(NPM_IMAGE) | awk '{ print $$2 }' | grep -q -F $(NODE_VERSION); then echo "building $(NPM_IMAGE)"; docker build -t $(NPM_IMAGE) --build-arg NODE_VERSION=$(NODE_VERSION) builder ; fi
 
-NPM_BINARY:=docker run -v $(PROJECT_DIR):/src -it --rm $(NPM_IMAGE) npm
+NPM_BINARY:=docker run -v $(PROJECT_DIR):/src -i --rm $(NPM_IMAGE) npm
 
 # path to artifact
 NPM_ARTIFACT:=$(BUILD_DIR)/$(ARTIFACT_NAME)
