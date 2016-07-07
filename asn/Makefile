@@ -47,12 +47,12 @@ validate-stack: stack-description
 
 deploy-stack: validate-stack stack-name push
 	$(ASNO_SHELL) aws cloudformation create-stack \
-		--stack-name $(STACK_NAME)-$(ENV) \
+		--stack-name $(STACK_NAME) \
 		--template-body file://$(ASNO_OUTPUT_DIR)/$(STACK_DESCRIPTION).json
 
 destroy-stack: stack-name
 	$(ASNO_SHELL) aws cloudformation delete-stack \
-		--stack-name $(STACK_NAME)-$(ENV)
+		--stack-name $(STACK_NAME)
 
 name-tag:
 	$(if $(value NAME_TAG),,$(error "NAME_TAG is required for asn/Makefile")) 
