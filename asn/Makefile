@@ -19,8 +19,11 @@ NESTED_ASNO_VERSION:=$(shell cd $(ASNO_DIR) \
 		&& echo `git rev-list --count $$COMMIT_HASH`-$$COMMIT_HASH)
 
 ASNO_IMAGE_NAME:=$(ORG)/asno:$(NESTED_ASNO_VERSION)
-ASNO_BINARY=docker run \
+ASNO_SHELL=docker run \
 						--rm \
+						-e AWS_DEFAULT_REGION=sa-east-1 \
+						-e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) \
+						-e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) \
 						-v $(HOST_OUTPUT_DIR):$(ASNO_OUTPUT_DIR) \
 						-v $(HOST_TEMPLATE_DIR):$(ASNO_TEMPLATE_DIR) \
 						-v $(HOST_VARIABLES_DIR):$(ASNO_VARIABLES_DIR) \
@@ -32,23 +35,23 @@ asno-binary:
 
 STACK_DESCRIPTION:=$(TEMPLATE)-$(VARIABLES)-$(ENV)
 stack-description: stack-variables stack-template name-tag asno-binary
-	$(ASNO_BINARY) \
+	$(ASNO_SHELL) cfndsl \
 		-D "nameTag='$(NAME_TAG)'" \
 		-y $(ASNO_VARIABLES_DIR)/$(VARIABLES).yml \
 		-o $(ASNO_OUTPUT_DIR)/$(STACK_DESCRIPTION).json \
 		$(ASNO_TEMPLATE_DIR)/$(TEMPLATE).rb
 
 validate-stack: stack-description
-	aws cloudformation validate-template \
-		--template-body file://$(HOST_OUTPUT_DIR)/$(STACK_DESCRIPTION).json
+	$(ASNO_SHELL) aws cloudformation validate-template \
+		--template-body file://$(ASNO_OUTPUT_DIR)/$(STACK_DESCRIPTION).json
 
 deploy-stack: validate-stack stack-name push
-	aws cloudformation create-stack \
+	$(ASNO_SHELL) aws cloudformation create-stack \
 		--stack-name $(STACK_NAME)-$(ENV) \
-		--template-body file://$(HOST_OUTPUT_DIR)/$(STACK_DESCRIPTION).json
+		--template-body file://$(ASNO_OUTPUT_DIR)/$(STACK_DESCRIPTION).json
 
 destroy-stack: stack-name
-	aws cloudformation delete-stack \
+	$(ASNO_SHELL) aws cloudformation delete-stack \
 		--stack-name $(STACK_NAME)-$(ENV)
 
 name-tag:
